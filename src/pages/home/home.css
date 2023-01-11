@@ -1,0 +1,34 @@
+.show-data {
+    margin-left: 15vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    width: 84vw;
+}
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.table {
+    width: 100%;
+    height: 100%;
+}
+.table table {
+    width: 100%;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #eee;
+  }
+  
+  td, th {
+    border: 1.1px solid #dddddd;
+    text-align: left;
+    padding: 1em;
+  }
+  
+  tr:nth-child(even) {
+  }

@@ -1,0 +1,33 @@
+nav {
+    margin-left: 15vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    border-bottom: 1px solid #eee;
+}
+.query-data {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+.search {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: .2em;
+
+}
+.query-data img {
+    width: 1.3em;
+    cursor: pointer;
+}
+.search input {
+    border: none;
+    padding: .2em;
+}
+.search input:focus {
+    outline: none;
+}
