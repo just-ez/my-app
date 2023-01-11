@@ -9,14 +9,15 @@ import searchBtn from "../../assets/img/search.svg";
 import filter from "../../assets/img/filter.svg";
 
 import Data from "../../assets/data";
-import {  useRef, useState } from "react";
+import {  useRef, useState, useEffect } from "react";
 
 function Home() {
   const [data, setDAta] = useState(Data);
   const [newData, setNewData] = useState<typeof Data>([]);
-  // useEffect(() => {
-  //   console.log("new", newData);
-  // }, [searchFn, newData]);
+
+  useEffect(() => {
+    console.log("new", filterChild);
+  }, [searchFn, newData]);
 
 
   const [searchState, setSearchState] = useState(String);
@@ -29,10 +30,10 @@ function Home() {
   const [itemInput, setItemInput] = useState(String);
   const [orderInput, setOrderInput] = useState(String);
   // const [typeAll, setTypeAll] = useState(String)
-  const [typeCFO, setTypeCFO] = useState(String)
-  const [typeEDF, setTypeEDF] = useState(String)
-  const [typeSFO, setTypeSFO] = useState(String)
-  let filterChild = [typeCFO, typeEDF, typeSFO]
+  // const [typeCFO, setTypeCFO] = useState(String)
+  // const [typeEDF, setTypeEDF] = useState(String)
+  // const [typeSFO, setTypeSFO] = useState(String)
+  let filterChild:   string[] = []
 
   //   show filter input
   const toggleShowFaq = (id: number) => {
@@ -50,14 +51,14 @@ function Home() {
   
   function handleSearch(e: any) {
     setSearchState(e.target.value);
-    console.log({searchState});
     
     searchFn(e.target.value)
+        
 
   }
 
   function searchFn(searchTerm: string) {
-    console.log({searchTerm});
+    
    const comaSep = searchTerm.split(',')
     
     const regexExp = new RegExp(searchTerm, "ig");
@@ -68,18 +69,17 @@ function Home() {
         singleData.type.match(regexExp) ||
         String(singleData.order).match(regexExp))
       );
-      if (typeCFO.length || typeEDF.length || typeSFO.length) {
+      if (filterChild.length) {
+        console.log({filterChild});
         filteredData = filteredData.filter((outputData) => filterChild.includes(outputData.type))
         console.log(filteredData);
         
       }
       if(orderInput) {
         const splitedOrder = orderInput.split(',')
-        console.log({orderInput, splitedOrder});
         filteredData = filteredData.filter((outputData) => splitedOrder.includes(String(outputData.order))
         )
       }
-    console.log({filteredData});
    setNewData(filteredData);
   }
   
@@ -90,7 +90,7 @@ function Home() {
         <nav>
           <div className="head-txt">
             <h1>Item Search</h1>
-            <p>{newData.length}</p>
+            <p>items: {newData.length}</p>
           </div>
 
           <div className="query-data">
@@ -99,7 +99,7 @@ function Home() {
                 handleSearch(e)
                 // setSearchState(e.target.value)
               }} />
-              <img src={searchBtn} alt="" />
+              <img src={searchBtn} alt="" onClick={()=> searchFn(searchState)}/>
             </div>
             <img
               src={filter}
@@ -125,7 +125,6 @@ function Home() {
             myCheck2.current?.checked === true ? myCheck2.current.checked = false : console.log('hi');
             myCheck3.current?.checked === true ? myCheck3.current.checked = false : console.log('hi');
               filterChild = []
-                console.log('filter',filterChild);
               }}>reset All</button>
             </div>
 
@@ -166,8 +165,9 @@ function Home() {
                       value={itemInput}
                       onChange={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g,'')
+                        setItemInput(e.target.value)
                         searchFn(searchState)
-                        setItemInput(e.target.value)}
+                      }
                       }
                       placeholder="Input orderId exp: 12234324"
                     />
@@ -182,7 +182,7 @@ function Home() {
                 </div>
                 {isActive === 3 && (
                   <div className="filter-data">
-                    <form method="post" action="/Tests/Post/">
+                    
                       {/* <div id="check">
                         <input
                           type="checkbox"
@@ -200,12 +200,8 @@ function Home() {
                           name="favorite_pet"
                           value="CAO"
                           id="CAO"
-                          onChange={(e)=> {
-                            
-                           e.target.checked ? setTypeCFO(e.target.value) : setTypeCFO('')
-                           ;
-                            searchFn(searchState)
-                          }}
+                          onClick={(e)=> filterChild.push(e.currentTarget.value) }
+                          onChange={()=>  searchFn(searchState)}
                           ref={myCheck}
                         />
                         <label htmlFor="CAO">CAO</label>
@@ -217,10 +213,8 @@ function Home() {
                           value="EDF"
                           id="EDF"
                           ref={myCheck2}
-                          onChange={(e)=> {
-                            e.target.checked ? setTypeEDF(e.target.value) : setTypeEDF('')
-                            searchFn(searchState)
-                          }}
+                          onClick={(e)=> filterChild.push(e.currentTarget.value)}
+                          onChange={()=>  searchFn(searchState)}
                         />
                         <label htmlFor="EDF">EDF</label>
                       </div>
@@ -231,16 +225,11 @@ function Home() {
                           value="SFO"
                           id="SFO"
                           ref={myCheck3}
-                          onChange={(e)=>{ 
-                            e.target.checked ? setTypeSFO(e.target.value) : setTypeSFO('')
-                            console.log(typeSFO);
-                            
-                            searchFn(searchState)
-                          }}
+                          onClick={(e)=> filterChild.push(e.currentTarget.value)}
+                          onChange={()=>  searchFn(searchState)}
                         />
                         <label htmlFor="SFO">SFO</label>
                       </div>
-                    </form>
                   </div>
                 )}
               </div>
